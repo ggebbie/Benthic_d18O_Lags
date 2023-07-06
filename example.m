@@ -1,8 +1,10 @@
 close all
 clear all
 clc
-addpath('scripts\')
-
+projectdir = pwd
+outputdir_brazil = fullfile(projectdir,'BIGMACS_outputs','Brazil_Margin')
+outputdir_atlantic = fullfile(projectdir,'BIGMACS_outputs','Atlantic')
+addpath(fullfile(projectdir,'scripts'))
 
 % 1 -> default Brazil Margin run
 % 2 -> synthetic Brazil Margin d18O from Gebbie, 2012
@@ -18,14 +20,14 @@ lag_times = 10:2:20;
 if run == 1 || run == 3 || run == 4
     % load d18O age models
     if run == 1
-        d18O = load('BIGMACS_outputs\Brazil_Margin\d18O\results.mat');
+        d18O = load(fullfile(outputdir_brazil,'d18O','results.mat'));
     elseif run == 3
-        d18O = load('BIGMACS_outputs\Brazil_Margin\d18O Lund\results.mat');
+        d18O = load(fullfile(outputdir_brazil,'d18O Lund','results.mat'));
     elseif run == 4
-        d18O = load('BIGMACS_outputs\Brazil_Margin\d18O ITWA\results.mat');
+        d18O = load(fullfile(outputdir_brazil,'d18O ITWA','results.mat'));
     end
     % load C14 age models
-    C14 = load('BIGMACS_outputs\Brazil_Margin\C14\results.mat');
+    C14 = load(fullfile(outputdir_brazil,'C14','results.mat'));
     % calculate lags
     lags = calculate_lag(C14,d18O,lag_times);
     % calculate lag stacks 
@@ -41,14 +43,14 @@ end
 
 % load and calculate synthetic d18O and lags
 if run == 2
-    d18O = load('BIGMACS_outputs\Brazil_Margin\d18O Gebbie\results.mat');
+    d18O = load(fullfile(outputdir_brazil,'d18O Gebbie','results.mat'));
     lags = calculate_lag_gebbie(d18O,lag_times);
 end
 
 % load Atlantic age models and calculate Atlantic lags
 if run == 5
-    d18O = load('BIGMACS_outputs\Atlantic\d18O\results.mat');
-    C14 = load('BIGMACS_outputs\Atlantic\C14\results.mat');
+    d18O = load(fullfile(outputdir_atlantic,'d18O','results.mat'));
+    C14 = load(fullfile(outputdir_atlantic,'C14','results.mat'));
     lags = calculate_lag(C14,d18O,lag_times);
 end
 
